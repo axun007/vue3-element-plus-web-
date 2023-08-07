@@ -89,12 +89,9 @@ const isImg = ref(false)
 const logoText = ref('XBD后台管理系统')
 // 默认路由(menu菜单默认选项)
 const defaultPath = ref('/panel/basedPanel')
-let breadcrumb = reactive([])
-let breadcrumbRouteAll = reactive([])
+let breadcrumb = ref([])
+let breadcrumbRouteAll = reactive([''])
 let breadcrumbText = ref('')
-
-console.log()
-
 // 菜单数据
 const menuList = reactive([
   {
@@ -130,18 +127,16 @@ watch(
     forMenu(menuList)
     getRouteAll(breadcrumbText)
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 )
+// 方法 **************************************************************
 // 获取当前是哪个菜单item
 function forMenu (val) {
   for (let i = 0; i < val.length; i++) {
     for (let j = 0; j < val[i].children.length; j++) {
       if (val[i].children[j].router === defaultPath.value) {
-        breadcrumb = [val[i].title, val[i].children[j].title]
-        breadcrumbText = breadcrumb[breadcrumb.length - 1]
-        console.log(breadcrumb)
-        console.log(breadcrumbText)
-        return
+        breadcrumb.value = [val[i].title, val[i].children[j].title]
+        breadcrumbText = breadcrumb.value[breadcrumb.length - 1]
       }
     }
   }
@@ -175,7 +170,6 @@ function getRouteAll(routeTitle) {
       if (routeItemTo.title === routeTitle) {
         // 只拿子节点
         breadcrumbRouteAll = routeItem.children
-        console.log(breadcrumbRouteAll)
       }
     })
   })
