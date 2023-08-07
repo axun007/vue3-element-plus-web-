@@ -1,0 +1,277 @@
+@keyframes rotate360 {
+  100% {
+      transform: rotate(540deg);
+  }
+}
+@keyframes rotate-360 {
+  100% {
+      transform: rotate(-360deg);
+  }
+}
+@keyframes router-360 {
+  100% {
+      transform: rotate(360deg);
+  }
+}
+// 路由过渡动画
+// 渐入渐出
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .4s ease;
+}
+.fade-enter{
+  opacity: 0;
+}
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-leave{
+  opacity: .5;
+}
+/*
+.fade-enter-active,
+.fade-enter-active {
+    transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    transform: translate(100%, 0);
+}
+
+
+*/
+.router-box{
+  position: relative;
+  background: rgba(245,247,249,1);
+  height: 89vh;
+  overflow-y: auto;
+}
+.router-view{
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  padding-right: 6px;
+  width: 99%;
+}
+.unfold{
+  font-size: 20px;
+  cursor: pointer;
+  transition: .5s ;
+  transform-origin: center;
+  transform: rotateZ(0deg);
+  animation: rotate-360 .5s ease-out 0s;
+}
+.fold{
+  font-size: 20px;
+  cursor: pointer;
+  transition: .5s;
+  transform-origin: center;
+  transform: rotateZ(180deg);
+  animation: rotate360 .5s ease-out 0s;
+}
+.margin-30{
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+}
+// .reset-router{
+//   cursor: pointer;
+//   font-size: 20px;
+//   transition: .5s;
+//   transform-origin: center;
+//   transform: rotateZ(360deg);
+//   animation: router360 .5s ease-out 0s;
+// }
+.reset-route{
+  cursor: pointer;
+  font-size: 20px;
+}
+.aa{
+  transition: all .5s;
+}
+.go{
+  transform:rotate(360deg);
+  transition: all .5s;
+}
+//elementUI 本身的折叠样式 不设置 折叠展开不会有动画
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  height: 100%;
+  background: rgba(0, 21, 41, 1);
+}
+.logoImg{
+  border-radius: 5px;
+  width: 32px;
+  height: 32px;
+  position: relative;
+}
+.left{
+  width: 50%;
+  display: flex;
+  align-items: center;
+  .bread{
+    // margin-left: 30px;
+    display: flex;
+    align-items: center;
+  }
+}
+/* 不被选中时颜色 */
+.el-breadcrumb ::v-deep(.el-breadcrumb__inner) {
+  color: #a2a7af !important;
+  font-weight:400 !important;
+}
+/* 被选中时的颜色 */
+.el-breadcrumb__item:last-child ::v-deep(.el-breadcrumb__inner) {
+  color: black !important;
+  font-weight:600 !important;
+}
+.menu-text{
+  width: 180px;
+  color: #bbbbbb;
+}
+.menu-text-Is{
+  color: #bbbbbb;
+}
+.right{
+  width: 50%;
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  div:nth-child(1){
+    display: flex;
+    align-items: center;
+    span:nth-child(1){
+      // padding-left: 10px;
+      color: rgb(96 98 102);
+      font-size: 18px;
+      display: flex;
+      align-content: center;
+      cursor: pointer;
+      img:nth-child(1){
+        border-radius: 50%;
+        width: 37px;
+        height:37px;
+      }
+    }
+  }
+  i{
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .language{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+  .message{
+    cursor: pointer;
+    color: rgb(245 108 108);
+  }
+}
+.el-header {
+  background-color: white;
+  color: #333;
+  line-height: 60px;
+}
+.menu-box{
+  background: rgba(0, 21, 41, 1);
+  min-height: 100vh;
+}
+.el-menu{
+  border:0;
+  text-align: left;
+  .el-menu-item{
+    width: 200px;
+  }
+}
+::v-deep(.el-menu--popup){
+  background-color: rgba(0, 21, 41, 1) !important;
+}
+.logo{
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+  font-weight: 500;
+  background-color: rgba(0, 21, 41, 1);
+}
+//折叠菜单后 鼠标移入后弹出菜单时的背景色
+.el-menu--popup-right-start{
+  li{
+    background-color: rgba(0, 21, 41, 1) !important;
+  }
+  li:hover{
+    background-color: rgba(0, 21, 41, 1) !important;
+  }
+}
+.item{
+  display: flex;
+  align-items: center;
+}
+.menu-text:hover{
+  transition: all .3s ease-in-out;
+  color: white;
+}
+::v-deep(.el-menu--popup){
+  background-color: red !important;
+}
+//子菜单的文字间距
+.menu-text{
+  display: flex;
+  justify-content: center;
+}
+// tab标签页样式
+::v-deep(.el-menu){
+  background: rgba(0, 21, 41, 1)
+}
+::v-deep(.el-sub-menu){
+  background-color: rgba(0, 21, 41, 1);
+}
+
+::v-deep(.el-sub-menu__title):hover {
+  background-color: rgba(0, 21, 41, 1);
+  .menu-text-Is{ 
+    transition: all .3s ease-in-out;
+    color: white !important;
+  }
+}
+//不设置 el-menu 展开折叠的时候 会闪动白色背景
+::v-deep(.el-menu) ::v-deep(.el-menu-item){
+  background-color: rgba(0, 21, 41, 1) !important;
+}
+::v-deep(.el-menu-item):hover {
+  background-color: rgba(0, 21, 41, 1) !important;
+  .menu-text{ 
+    transition: all .5s ease-in-out;
+    color: white !important;
+  }
+}
+::v-deep(.el-menu-item):focus {
+  background-color: rgba(0, 21, 41, 1) !important;
+  .menu-text{ 
+    transition: all .5s ease-in-out;
+    color: #bbbbbb !important;
+  }
+}
+// 不设置会点击菜单后 子组件会变成白色背景 点击别处又小时
+.el-menu-item.is-active {
+  background-color: rgba(0, 21, 41, 1) !important;
+  .menu-text{
+    border-radius: 5px;
+    position: relative;
+    color: white !important;
+    background-color: #2D8CF0;
+  }
+  .menu-text-Is{ 
+    color: white;
+  }
+}
+// .el-sub-menu .is-active {
+//   padding: 0 10px !important;{
+// }
+.el-menu--vertical:not(.el-menu--collapse):not(.el-menu--popup-container) .el-menu-item{
+  padding: 0px 10px;
+}

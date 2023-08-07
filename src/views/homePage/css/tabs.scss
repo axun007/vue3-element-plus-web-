@@ -1,0 +1,100 @@
+body{
+  background-color: rgba(245,247,249,1);
+}
+// 折叠后移入菜单 框背景颜色
+.el-menu--vertical .el-menu.el-menu--popup {
+  background-color: rgba(0, 21, 41, 1) !important;
+  border-radius: 5px;
+  min-width: 120px !important;
+  .el-menu-item{
+    width: 120px !important;
+    height: 40px;
+    padding-left: 0px !important;
+    padding: 0px 7px !important;
+  }
+  .el-menu-item.is-active{
+    height: 40px;
+  }
+  .menu-text{
+    height: 40px !important;
+    line-height: 40px;
+    overflow: hidden;
+    padding: 0px 15px !important;
+  }
+}
+.el-sub-menu.is-active,.el-sub-menu{
+  i{
+    transition-duration: 0.3s;
+  }
+  .menu-text-Is{
+    transition-duration: 0.3s;
+  }
+}
+// 隐藏menu自带的小箭头 ↓
+// .el-sub-menu.is-opened>.el-sub-menu__title .el-sub-menu__icon-arrow{
+// 	display: none; 
+// }
+// .el-sub-menu>.el-sub-menu__title .el-sub-menu__icon-arrow{
+// 	display: none;
+// }
+// 菜单icon默认颜色
+.el-sub-menu{
+  i{
+    color: rgba(144,147,153,1.000) !important;
+  }
+}
+// 选中菜单 菜单icon变色
+.el-sub-menu.is-active,.el-sub-menu:hover{
+  i{
+    transition: all .3s ease-in-out;;
+    color: white !important;
+  }
+  .menu-text-Is{
+    transition: all .3s;
+    color: white;
+  }
+}
+// tab标签页样式
+.el-tabs__item{
+  padding: 0;
+  margin: 0;
+  border: 0;
+  line-height: 32px !important;
+  padding: 0px 16px 4px !important;
+  height: 32px !important;
+  margin-right: 6px;
+} 
+//整个scrool滚动条样式
+.el-tabs--card>.el-tabs__header {
+  border-bottom: 0 !important;
+  background: rgba(245,247,249,1);
+  // height: 32;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__nav{
+  border: 0 !important;
+  border-radius: 3px !important;
+  height: 32px;
+}
+// 每个循环出来的tab标签右边框
+.el-tabs--card>.el-tabs__header .el-tabs__item{
+  border: 0 !important;
+  background: white ;
+  border-radius: 3px;
+  
+}
+// 最外层tab
+.el-tabs.el-tabs--card.el-tabs--top{
+  height: 32px !important;
+  padding: 0 0 6px 0;
+  transition: all .5s;
+}
+.el-tabs__nav-prev,.el-tabs__nav-next{
+  line-height: 32px !important;
+}
+//鼠标悬浮字体变色
+.el-tabs__item:hover{
+  color: rgb(119, 121, 124) !important;
+}
+.el-tabs__item.is-active:hover{
+  color: rgb(64 158 255) !important;
+}
