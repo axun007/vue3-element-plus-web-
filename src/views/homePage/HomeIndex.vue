@@ -86,7 +86,7 @@ const isReSet = ref(false)
 // 控制图片显示隐藏
 const isImg = ref(false)
 // 项目名
-const logoText = ref('Tomax')
+const logoText = ref('XBD后台管理系统')
 // 默认路由(menu菜单默认选项)
 const defaultPath = ref('/panel/basedPanel')
 let breadcrumb = reactive([])
