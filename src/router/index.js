@@ -3,6 +3,10 @@ import HomeView from '../views/homePage/HomeIndex.vue'
 const routes = [
   {
     path: '/',
+    redirect: '/login',
+  },
+  {
+    path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "about" */ '../views/login/login.vue')
   },
