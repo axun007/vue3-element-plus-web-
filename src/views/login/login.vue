@@ -369,19 +369,20 @@ function goBack() {
           .content{
             .login-service{
               width: 100%;
+              height: 25px;
               display: flex;
               justify-content: space-between;
               align-items: center;
               .select-box{
                 display: flex;
                 div:nth-child(2){
-                  margin-left: 10px;
+                  margin-left: 5px;
                 }
               }
               .second-box{
                 display: flex;
                 div:nth-child(2){
-                  margin-left: 10px;
+                  margin-left:5px;
                 }
               }
             }
@@ -408,6 +409,7 @@ function goBack() {
   }
   ::v-deep(.submit){
     width: 100%;
+    height: 37px;
   }
   ::v-deep(.el-tabs__nav-wrap::after){
     background-color: white

@@ -85,7 +85,7 @@
                 <el-dropdown-menu>
                   <el-dropdown-item icon="user">个人设置</el-dropdown-item>
                   <el-dropdown-item icon="lock">修改密码</el-dropdown-item>
-                  <el-dropdown-item icon="back">退出登录</el-dropdown-item>
+                  <el-dropdown-item icon="back"  @click="logOut">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -100,12 +100,14 @@
 import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as turf from '@turf/turf'
+import { ElMessage, ElNotification } from 'element-plus'
+
 // 菜单折叠
 const isCollapse = ref(false)
 // 刷新
 const isReSet = ref(false)
 // 控制图片显示隐藏
-const isImg = ref(false)
+const isImg = ref(true)
 // 项目名
 const logoText = ref('Redundant')
 // 默认路由(menu菜单默认选项)
@@ -140,6 +142,7 @@ const menuList = reactive([
 ])
 // 监听当前路由变化
 const router = useRouter()
+notifyOpen()
 watch(
   () => router.currentRoute.value,
   () => {
@@ -165,16 +168,17 @@ function forMenu (val) {
 // 折叠展开 菜单
 function isMenu () {
   if (isCollapse.value === false) {
-    isImg.value = true
+    // isImg.value = true
     isCollapse.value = !isCollapse.value
   } else {
-    isImg.value = false
+    // isImg.value = false
     isCollapse.value = !isCollapse.value
   }
 }
 // 刷新按钮
 function isResetRouter () {
   isReSet.value = !isReSet.value
+  router.go(0)
 }
 // 头部面包屑路由跳转
 function goRoute(path) {
@@ -193,6 +197,28 @@ function getRouteAll(routeTitle) {
         breadcrumbRouteAll.value = routeItem.children
       }
     })
+  })
+}
+// 退出登录
+function logOut() {
+  localStorage.removeItem('tabsList')
+  ElMessage({
+    message: '成功退出登录',
+    type: 'success',
+  })
+  // 跳转登录页
+  router.push({
+    path: '/'
+  })
+}
+// 通知
+function notifyOpen() {
+  ElNotification({
+    title: '1.0.0.1版本更新公告',
+    dangerouslyUseHTMLString: true,
+    position: 'bottom-right',
+    duration: 5000,
+    message: '<strong><i>努力开发中</i></strong>'
   })
 }
 </script>
