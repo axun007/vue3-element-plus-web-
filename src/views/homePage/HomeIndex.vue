@@ -1,7 +1,8 @@
 <template>
   <el-container ref="bodyHeight">
     <div class="menu-box">
-      <el-menu class="el-menu-vertical-demo" :default-active="defaultPath" router :collapse="isCollapse">
+      <!-- 菜单 -->
+      <el-menu class="el-menu-vertical-demo" unique-opened :default-active="defaultPath" router :collapse="isCollapse">
         <div class="logo">
           <span v-show="isImg">
             <img src="../../assets/cat01.jpg" class="logoImg"/>
@@ -70,6 +71,26 @@
             </div>
           </div>
         </div>
+        <div class="right">
+          <div class="language">
+
+          </div>
+          <div class="head_portrait">
+            <!-- 头像下拉菜单 -->
+            <el-dropdown>
+              <span>
+                <img src="../../assets/cat01.jpg" >
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item icon="user">个人设置</el-dropdown-item>
+                  <el-dropdown-item icon="lock">修改密码</el-dropdown-item>
+                  <el-dropdown-item icon="back">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div>
       </el-header>
     </el-container>
   </el-container>
@@ -90,7 +111,7 @@ const logoText = ref('XBD后台管理系统')
 // 默认路由(menu菜单默认选项)
 const defaultPath = ref('/panel/basedPanel')
 let breadcrumb = ref([])
-let breadcrumbRouteAll = reactive([''])
+let breadcrumbRouteAll = ref([''])
 let breadcrumbText = ref('')
 // 菜单数据
 const menuList = reactive([
@@ -136,7 +157,7 @@ function forMenu (val) {
     for (let j = 0; j < val[i].children.length; j++) {
       if (val[i].children[j].router === defaultPath.value) {
         breadcrumb.value = [val[i].title, val[i].children[j].title]
-        breadcrumbText = breadcrumb.value[breadcrumb.length - 1]
+        breadcrumbText = breadcrumb.value[breadcrumb.value.length - 1]
       }
     }
   }
@@ -169,13 +190,12 @@ function getRouteAll(routeTitle) {
     routeItem.children.forEach((routeItemTo, routeIndexTo) => {
       if (routeItemTo.title === routeTitle) {
         // 只拿子节点
-        breadcrumbRouteAll = routeItem.children
+        breadcrumbRouteAll.value = routeItem.children
       }
     })
   })
 }
 </script>
-
 <style lang="scss">
 @import './css/tabs.scss';
 </style>
@@ -187,9 +207,6 @@ function getRouteAll(routeTitle) {
   .dropdown-menu {
     cursor: pointer;
   }
-  // .el-main{
-  //   // padding-right: 10px;
-  // }
   .logo {
     span{
       display: flex;

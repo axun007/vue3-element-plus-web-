@@ -28,4 +28,8 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+/* 解决element 下拉菜单组件选中的出现的黑框 */
+.el-tooltip__trigger:focus {
+  outline: none;
+}
 </style>

@@ -5,19 +5,19 @@ body{
 .el-menu--vertical .el-menu.el-menu--popup {
   background-color: rgba(0, 21, 41, 1) !important;
   border-radius: 5px;
-  min-width: 120px !important;
+  min-width: 100px !important;
   .el-menu-item{
-    width: 120px !important;
-    height: 40px;
+    width: 100px !important;
+    height: 30px;
     padding-left: 0px !important;
     padding: 0px 7px !important;
   }
   .el-menu-item.is-active{
-    height: 40px;
+    height: 30px;
   }
   .menu-text{
-    height: 40px !important;
-    line-height: 40px;
+    height: 30px !important;
+    line-height: 30px;
     overflow: hidden;
     padding: 0px 15px !important;
   }

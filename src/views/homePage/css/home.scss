@@ -96,7 +96,7 @@
 }
 //elementUI 本身的折叠样式 不设置 折叠展开不会有动画
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 150px;
   height: 100%;
   background: rgba(0, 21, 41, 1);
 }
@@ -116,6 +116,11 @@
     align-items: center;
   }
 }
+.right{
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
 /* 不被选中时颜色 */
 .el-breadcrumb ::v-deep(.el-breadcrumb__inner) {
   color: #a2a7af !important;
@@ -132,6 +137,7 @@
 }
 .menu-text-Is{
   color: #bbbbbb;
+  font-size: 12px;
 }
 .right{
   width: 50%;
@@ -182,7 +188,14 @@
   border:0;
   text-align: left;
   .el-menu-item{
-    width: 200px;
+    width: 150px;
+    line-height: 35px;
+    font-size: 12px;
+  }
+}
+.el-sub-menu__title{
+  i{
+    font-size: 15px;
   }
 }
 ::v-deep(.el-menu--popup){
