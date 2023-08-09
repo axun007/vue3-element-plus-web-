@@ -101,6 +101,7 @@ import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as turf from '@turf/turf'
 import { ElMessage, ElNotification } from 'element-plus'
+import redirectPathPage from '../redirectPathPage.vue'
 
 // 菜单折叠
 const isCollapse = ref(false)
@@ -177,14 +178,20 @@ function isMenu () {
 }
 // 刷新按钮
 function isResetRouter () {
+  console.log(1)
   isReSet.value = !isReSet.value
-  router.go(0)
+  // 动态增加路由 以当前路由前面多加一级/redirect来命名path 设置的name是为了方便删除路由
+  router.addRoute('/home',  { path: '/redirect' + defaultPath.value, name: 'redirectRouter', component: redirectPathPage })
+  // 跳转
+  router.push({ path: '/redirect' + defaultPath.value})
 }
 // 头部面包屑路由跳转
 function goRoute(path) {
   if (path.router !== router.currentRoute.value.fullpath) {
-    this.$router.push({path: path.router})
-    this.addTab(path.title, path.router)
+    router.push({
+      path: path.router
+    })
+    addTab(path.title, path.router)
     return
   }
 }
