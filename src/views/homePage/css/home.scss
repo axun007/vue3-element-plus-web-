@@ -19,40 +19,28 @@
 .fade-leave-active {
   transition: opacity .4s ease;
 }
-.fade-enter{
-  opacity: 0;
-}
-.fade-leave-to {
-  opacity: 0;
-}
-.fade-leave{
-  opacity: .5;
-}
-/*
-.fade-enter-active,
-.fade-enter-active {
-    transition: all 0.5s ease;
-}
-
 .fade-enter-from,
 .fade-leave-to {
-    transform: translate(100%, 0);
+  opacity: 0;
 }
 
-
-*/
 .router-box{
   position: relative;
-  background: rgba(245,247,249,1);
-  height: 89vh;
+  height: 84vh;
   overflow-y: auto;
+  // background: rgba(245,247,249,1);
+  background: pink;
+}
+.right_header{
+  display: flex;
+  height: 7%;
 }
 .router-view{
   position: absolute !important;
   top: 0px;
-  left: 0px;
-  padding-right: 6px;
-  width: 99%;
+  left: .75%;
+  width: 98.5%;
+  // background: red;
 }
 .unfold{
   font-size: 20px;

@@ -131,8 +131,8 @@ let img = new URL('../../assets/login.svg', import.meta.url).href
 let activeName = ref('first')
 // 登录表单input绑定值
 let loginForm = reactive({
-  account: '',
-  password: ''
+  account: '19813301514',
+  password: '123456789'
 })
 // 注册表单input绑定值
 let registerForm = reactive({

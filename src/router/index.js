@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/homePage/HomeIndex.vue'
+import panel from './modules/panel'
+import system from './modules/system'
 const routes = [
   {
     path: '/',
@@ -16,16 +18,8 @@ const routes = [
     component: HomeView,
     redirect: '/panel/basedPanel',
     children: [
-      {
-        path: '/panel/basedPanel',
-        name: 'panel.basedPanel',
-        component: () => import(/* webpackChunkName: "about" */ '../views/panel/basePanel.vue')
-      },
-      {
-        path: '/systemManagement/userManagement',
-        name: 'systemManagement.userManagement',
-        component: () => import(/* webpackChunkName: "about" */ '../views/systemManagement/userManagement.vue')
-      }
+      ...panel,
+      ...system
     ]
   },
 ]

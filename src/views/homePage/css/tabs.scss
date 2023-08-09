@@ -60,7 +60,7 @@ body{
   margin: 0;
   border: 0;
   line-height: 32px !important;
-  padding: 0px 16px 4px !important;
+  padding:0px 16px 2px !important;
   height: 32px !important;
   margin-right: 6px;
 } 
@@ -71,6 +71,7 @@ body{
   // height: 32;
 }
 .el-tabs--card>.el-tabs__header .el-tabs__nav{
+  margin-top: 10px;
   border: 0 !important;
   border-radius: 3px !important;
   height: 32px;
@@ -84,8 +85,8 @@ body{
 }
 // 最外层tab
 .el-tabs.el-tabs--card.el-tabs--top{
-  height: 32px !important;
-  padding: 0 0 6px 0;
+  height: 40px !important;
+  padding: 0 0 10px 0;
   transition: all .5s;
 }
 .el-tabs__nav-prev,.el-tabs__nav-next{
