@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/homePage/HomeIndex.vue'
 import panel from './modules/panel'
 import system from './modules/system'
+
 const routes = [
   {
     path: '/',
@@ -19,7 +20,13 @@ const routes = [
     redirect: '/panel/basedPanel',
     children: [
       ...panel,
-      ...system
+      ...system,
+      // 刷新路由的页面
+      {
+        path: '/redirectPage',
+        name: 'redirect',
+        component: () => import(/* webpackChunkName: "about" */ '../views/redirectPathPage.vue')
+      }
     ]
   },
 ]

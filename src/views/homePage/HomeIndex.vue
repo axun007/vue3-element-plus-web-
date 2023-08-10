@@ -147,13 +147,17 @@
   </el-container>
 </template>
 
+<!-- <script>
+  import SaveStatusMixin from '../../mixin/SaveStatusMixin.js'
+  export default {
+    mixins: [SaveStatusMixin]
+  }
+</script> -->
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import * as turf from '@turf/turf'
 import { ElMessage, ElNotification } from 'element-plus'
-import redirectPathPage from '../redirectPathPage.vue'
-// import SaveStatusMixin from '../../mixin/SaveStatusMixin.vue'
 // 菜单折叠
 const isCollapse = ref(false)
 // 刷新
@@ -219,10 +223,10 @@ let isTabCloseLeft = ref(false)
 let isTabCloseRight = ref(false)
 let isTabCloseElse = ref(false)
 let isTabCloseAll = ref(false)
-
+const { proxy } = getCurrentInstance()
+console.log(proxy.statusFields = ['editableTabs'])
 // 监听当前路由变化
 const router = useRouter()
-notifyOpen()
 watch(
   () => router.currentRoute.value,
   () => {
@@ -236,7 +240,18 @@ watch(
   },
   { immediate: true, deep: true }
 )
+// 监听页面的离开和刷新
+// https://blog.csdn.net/qq_41337100/article/details/106010448
+window.addEventListener('beforeunload', updateHandler)
+// 通知弹窗
+notifyOpen()
+// 本地存储的菜单数据
 addTab(breadcrumbText, router.currentRoute.value.path)
+let tabsBox = JSON.parse(localStorage.getItem('tabsList'))
+// 判断是否为真 赋值
+if (tabsBox) {
+  editableTabs = tabsBox
+}
 // 方法 **************************************************************
 // 获取当前是哪个菜单item
 function forMenu (val) {
@@ -263,10 +278,11 @@ function isMenu () {
 function isResetRouter () {
   isReSet.value = !isReSet.value
   // 动态增加路由 以当前路由前面多加一级/redirect来命名path 设置的name是为了方便删除路由
-  router.addRoute('home',  { path: '/redirect' + defaultPath.value, name: 'redirectRouter', component: redirectPathPage })
+  // router.addRoute('home',  { path: '/redirect' + defaultPath.value, name: 'redirectRouter', component: redirectPathPage })
   // 跳转
-  console.log(router.getRoutes())
-  router.push({ path: '/redirect' + defaultPath.value})
+  // console.log(router.getRoutes())
+  // router.push({ path: '/redirect' + defaultPath.value})
+  router.push({ path: '/redirectPage'})
 }
 // 头部面包屑路由跳转
 function goRoute(path) {
@@ -469,6 +485,15 @@ function closeAll() {
     router.push({path: editableTabs[0].name})
   }
   editableTabs.splice(1)
+}
+// 监听页面的离开和刷新
+// 参考 https://blog.csdn.net/qq_41337100/article/details/106010448
+function destroyed() {
+  window.removeEventListener('beforeunload', updateHandler)
+}
+// 离开页面前将tabs存入localStorage
+function updateHandler() {
+  localStorage.setItem('tabsList', JSON.stringify(editableTabs))
 }
 </script>
 <style lang="scss">
