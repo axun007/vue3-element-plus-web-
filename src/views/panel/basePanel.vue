@@ -1,6 +1,5 @@
 <template>
  <div class="base_pael_box">
-
  </div>
 </template>
 
@@ -10,7 +9,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .base_pael_box{
    width: 100%;
    height: 100%;
