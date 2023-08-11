@@ -117,6 +117,7 @@
 import { ref, reactive, watch, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { UserService } from '../../api/api.js'
 
 // 当前页面所有标签设置的 ref 对象
 const pageDomList = getCurrentInstance()
@@ -132,13 +133,13 @@ let activeName = ref('first')
 // 登录表单input绑定值
 let loginForm = reactive({
   account: '19813301514',
-  password: '123456789'
+  password: 'lwx123123'
 })
 // 注册表单input绑定值
 let registerForm = reactive({
   regAccount: '',
   mobile: '',
-  code: '',
+  code: '999999',
   regPassword: '',
   confirmPassword: '',
   consent: false
@@ -285,7 +286,6 @@ function confirm () {
     if (valid) {
       login()
     } else {
-      console.log('error');
       return false
     }
   })
@@ -294,9 +294,8 @@ function confirm () {
 function goRegister() {
   pageDomList.refs.registerFormRef.validate((valid) => {
     if (valid) {
-      login()
+      register()
     } else {
-      console.log('error');
       return false
     }
   })
@@ -304,21 +303,79 @@ function goRegister() {
 // 登录方法
 function login() {
   loading.value = true
-  setTimeout(() => {
-    ElMessage({
-      message: '登陆成功，即将进入系统',
-      type: 'success',
-    })
-    setTimeout(() => {
-      router.push({
-        path: '/home'
+  UserService.login({
+    mobile: loginForm.account,
+    password: loginForm.password
+  }).then((res) => {
+    if (res.msg === 'ok' && res.status === 200) {
+      ElMessage({
+        message: '登陆成功，即将进入系统',
+        type: 'success',
       })
-    }, 1500)
-  }, 1500)
+      setTimeout(() => {
+        router.push({
+          path: '/home'
+        })
+        clearFormValue()
+      }, 1500)
+      return
+    }
+    ElMessage({
+      message: res.msg,
+      type: 'warning',
+    })
+    loading.value = false
+  }).catch((error) => {
+    console.log(error)
+    loading.value = false
+  })
+}
+// 注册方法
+function register() {
+  loading.value = true
+  UserService.registers({
+    nickname: registerForm.regAccount,
+    mobile: registerForm.mobile,
+    password: registerForm.regPassword
+  }).then((res) => {
+    if (res.msg === 'ok' && res.status === 200) {
+      ElMessage({
+        message: '注册成功',
+        type: 'success',
+      })
+      setTimeout(() => {
+        router.push({
+          path: '/home'
+        })
+        clearFormValue()
+      }, 1500)
+      return
+    }
+    ElMessage({
+      message: res.msg,
+      type: 'warning',
+    })
+    loading.value = false
+  })
 }
 // 返回
 function goBack() {
   activeName.value = 'first'
+}
+// 清空数据
+function clearFormValue () {
+  loginForm = {
+    account: '19012345678',
+    password: 'fosa4fjwefn'
+  }
+  registerForm = {
+    regAccount: '',
+    mobile: '',
+    code: '99999',
+    regPassword: '',
+    confirmPassword: '',
+    consent: false
+  }
 }
 </script>
 <style scoped lang="scss">
