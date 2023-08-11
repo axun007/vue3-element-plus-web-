@@ -28,7 +28,7 @@
       </el-menu>
     </div>
     <!-- 右侧主题 -->
-    <el-container>
+    <el-container class="right_content">
       <!-- 头部功能 -->
       <el-header class="right_header">
         <!-- 左侧功能  -->
@@ -223,8 +223,8 @@ let isTabCloseLeft = ref(false)
 let isTabCloseRight = ref(false)
 let isTabCloseElse = ref(false)
 let isTabCloseAll = ref(false)
-const { proxy } = getCurrentInstance()
-console.log(proxy.statusFields = ['editableTabs'])
+// const { proxy } = getCurrentInstance()
+// console.log(proxy.statusFields = ['editableTabs'])
 // 监听当前路由变化
 const router = useRouter()
 watch(
