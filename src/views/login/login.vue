@@ -1,5 +1,5 @@
 <template>
-<div class="home">
+  <div class="home">
     <div class="left-box">
       <div>
         <img :src="img">
@@ -43,7 +43,7 @@
                     </div>
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" class="submit" @click="confirm" :loading="loading">登录</el-button>
+                    <el-button type="primary" class="submit" :loading="loading" id="CaptchaId">登录</el-button>
                   </el-form-item>
                   <div class="service">
                     <div class="login-service">
@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, getCurrentInstance } from 'vue'
+import { ref, reactive, watch, getCurrentInstance, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { UserService } from '../../api/api.js'
@@ -126,6 +126,8 @@ const router = useRouter()
 // 校验器
 // 转圈加载动画
 let loading = ref(false)
+// 滑块显示隐藏
+let isShow = ref(true)
 // 左侧主题图片
 let img = new URL('../../assets/login.svg', import.meta.url).href
 // 登陆注册tabs默认选中的值
@@ -270,6 +272,8 @@ let regRules = reactive({
     }
   ],
 })
+// 腾讯滑块安全验证
+let CaptchaId = ref('195319963')
 
 // 方法********************************************
 // 监听tabs的值
@@ -278,6 +282,30 @@ watch(activeName, (val, prevVal) => {
     pageDomList.refs.registerFormRef.resetFields();
   } else {
     pageDomList.refs.loginFormRef.resetFields();
+  }
+})
+// 挂载后
+onMounted(() => {
+  // 防止重复引入腾讯验证码js库
+  // 获取所有的script标签 循环
+  let lengthAll = document.getElementsByTagName('script').length
+  // 初始值为 false 只有为false 才引入 
+  let state = false
+  // 循环所有script 如果有一个script的src等于腾讯验证码库js路径 则视为已引入 设置state状态为true
+  for (let i = 0; i < lengthAll; i++) {
+    if (document.getElementsByTagName('script')[i] && document.getElementsByTagName('script')[i].src) {
+      if (document.getElementsByTagName('script')[i].src === 'https://turing.captcha.qcloud.com/TCaptcha.js') {
+        state = true
+      }
+    }
+  }
+  // 只有state状态为false 才引入腾讯验证码js库
+  if (!state) {
+    let script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = 'https://turing.captcha.qcloud.com/TCaptcha.js'
+    document.body.appendChild(script)
+    addMethods()
   }
 })
 // 登录按钮
@@ -344,11 +372,11 @@ function register() {
         type: 'success',
       })
       setTimeout(() => {
-        router.push({
-          path: '/home'
-        })
-        clearFormValue()
-      }, 1500)
+        activeName.value = 'first'
+        loginForm.account = registerForm.mobile
+        loginForm.password = ''
+        loading.value = false
+      }, 500)
       return
     }
     ElMessage({
@@ -364,11 +392,11 @@ function goBack() {
 }
 // 清空数据
 function clearFormValue () {
-  loginForm = {
+  loginForm.value = {
     account: '19012345678',
     password: 'fosa4fjwefn'
   }
-  registerForm = {
+  registerForm.value = {
     regAccount: '',
     mobile: '',
     code: '99999',
@@ -376,6 +404,53 @@ function clearFormValue () {
     confirmPassword: '',
     consent: false
   }
+}
+// 腾讯安全验证模块
+function callback(res) {
+  // 第一个参数传入回调结果，结果如下：
+  // ret         Int       验证结果，0：验证成功。2：用户主动关闭验证码。
+  // ticket      String    验证成功的票据，当且仅当 ret = 0 时 ticket 有值。
+  // CaptchaAppId       String    验证码应用ID。
+  // bizState    Any       自定义透传参数。
+  // randstr     String    本次验证的随机串，后续票据校验时需传递该参数。
+  console.log('callback:', res);
+  // res（用户主动关闭验证码）= {ret: 2, ticket: null}
+  // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
+  // res（请求验证码发生错误，验证码自动返回terror_前缀的容灾票据） = {ret: 0, ticket: "String", randstr: "String",  errorCode: Number, errorMessage: "String"}
+  // 此处代码仅为验证结果的展示示例，真实业务接入，建议基于ticket和errorCode情况做不同的业务处理
+  if (res.ret === 0) {
+    confirm()
+  }
+}
+// 定义验证码js加载错误处理函数
+function loadErrorCallback() {
+  var appid = '您的CaptchaAppId';
+  // 生成容灾票据或自行做其它处理
+  var ticket = 'terror_1001_' + appid + '_' + Math.floor(new Date().getTime() / 1000);
+  callback({
+    ret: 0,
+    randstr: '@'+ Math.random().toString(36).substr(2),
+    ticket: ticket,
+    errorCode: 1001,
+    errorMessage: 'jsload_error'
+  })
+}
+// 给登录button增加一个点击事件
+function addMethods() {
+  document.getElementById('CaptchaId').onclick = function(){
+    try {
+      // 生成一个验证码对象
+      // CaptchaAppId：登录验证码控制台，从【验证管理】页面进行查看。如果未创建过验证，请先新建验证。注意：不可使用客户端类型为小程序的CaptchaAppId，会导致数据统计错误。
+      //callback：定义的回调函数
+      var captcha = new TencentCaptcha('195319963', callback, {});
+      // 调用方法，显示验证码
+      captcha.show()
+    } catch (error) {
+      // 加载异常，调用验证码js加载错误处理函数
+      loadErrorCallback()
+    }
+}
+
 }
 </script>
 <style scoped lang="scss">
@@ -415,6 +490,41 @@ function clearFormValue () {
               width: 100%;
               background: pink;
               height: 80px;
+            }
+            .logo {
+              z-index: 1;
+              position: relative;
+              font-size: inherit;
+              font-family: inherit;
+              color: white;
+              padding: 0.5em 1em;
+              outline: none;
+              border: none;
+              overflow: hidden;
+              transition: color 0.2s ease-in-out;
+            }
+            .logo::before {
+              content: '';
+              z-index: -1;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 1em;
+              height: 1em;
+              border-radius: 50%;
+              background-color: #409EFF;
+              transform-origin: center;
+              transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 0);
+              transition: transform 0.2s ease-in-out;
+            }
+
+            .logo:hover {
+              cursor: pointer;
+              color: #161616;
+            }
+
+            .logo:hover::before {
+              transform: translate3d(-50%, -50%, 0) scale3d(55, 55, 1);
             }
             .text{
               color: #808695;
