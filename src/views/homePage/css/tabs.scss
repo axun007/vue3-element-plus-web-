@@ -54,48 +54,54 @@ body{
     color: white;
   }
 }
-// tab标签页样式
-.el-tabs__item{
-  padding: 0;
-  margin: 0;
-  border: 0;
-  line-height: 32px !important;
-  padding:0px 16px 2px !important;
-  height: 32px !important;
-  margin-right: 6px;
-} 
-//整个scrool滚动条样式
-.el-tabs--card>.el-tabs__header {
-  border-bottom: 0 !important;
-  background: rgba(245,247,249,1);
-  // height: 32;
-}
-.el-tabs--card>.el-tabs__header .el-tabs__nav{
-  margin-top: 10px;
-  border: 0 !important;
-  border-radius: 3px !important;
-  height: 32px;
-}
-// 每个循环出来的tab标签右边框
-.el-tabs--card>.el-tabs__header .el-tabs__item{
-  border: 0 !important;
-  background: white ;
-  border-radius: 3px;
-  
-}
-// 最外层tab
-.el-tabs.el-tabs--card.el-tabs--top{
-  height: 40px !important;
-  padding: 0 0 10px 0;
-  transition: all .5s;
-}
-.el-tabs__nav-prev,.el-tabs__nav-next{
-  line-height: 32px !important;
-}
-//鼠标悬浮字体变色
-.el-tabs__item:hover{
-  color: rgb(119, 121, 124) !important;
-}
-.el-tabs__item.is-active:hover{
-  color: rgb(64 158 255) !important;
+.right_content{
+    // tab标签页样式
+  .el-tabs__item{
+    padding: 0;
+    margin: 0;
+    border: 0;
+    padding:0px 10px 2px !important;
+    height: 25px !important;
+    margin-right: 6px;
+    font-size: 12px !important;
+  } 
+  //整个scrool滚动条样式
+  .el-tabs--card>.el-tabs__header {
+    border-bottom: 0 !important;
+    background: rgba(245,247,249,1);
+    // height: 32;
+  }
+  .el-tabs__header{
+    display: flex;
+    align-items: center;
+  }
+  .el-tabs--card>.el-tabs__header .el-tabs__nav{
+    // margin-top: 10px;
+    border: 0 !important;
+    border-radius: 3px !important;
+    height: 25px;
+    padding-left: 13px;
+  }
+  // 每个循环出来的tab标签右边框
+  .el-tabs--card>.el-tabs__header .el-tabs__item{
+    border: 0 !important;
+    background: white ;
+    border-radius: 3px;
+  }
+  // 最外层tab
+  .el-tabs.el-tabs--card.el-tabs--top{
+    height: 40px !important;
+    padding: 0 0 0px 0px;
+    transition: all .5s;
+  }
+  .el-tabs__nav-prev,.el-tabs__nav-next{
+    line-height: 32px !important;
+  }
+  //鼠标悬浮字体变色
+  .el-tabs__item:hover{
+    color: rgb(119, 121, 124) !important;
+  }
+  .el-tabs__item.is-active:hover{
+    color: rgb(64 158 255) !important;
+  }
 }

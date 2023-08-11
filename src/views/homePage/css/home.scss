@@ -17,7 +17,7 @@
 // 渐入渐出
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .4s ease;
+  transition: opacity .2s ease;
 }
 .fade-enter-from,
 .fade-leave-to {
@@ -26,7 +26,7 @@
 
 .router-box{
   position: relative;
-  height: 84vh;
+  height: calc(100%);
   overflow-y: auto;
   // background: rgba(245,247,249,1);
   background: pink;
