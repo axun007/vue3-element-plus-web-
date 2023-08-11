@@ -75,7 +75,18 @@
         <!-- 右侧功能 -->
         <div class="right">
           <div class="language">
-
+            <el-dropdown @command="languageCommand">
+              <span>
+                <img src="../../assets/language.png" >
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item v-for="item in languageList" :command="item.value">
+                    {{ item.label }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
           <div class="head_portrait">
             <!-- 头像下拉菜单 -->
@@ -154,10 +165,17 @@
   }
 </script> -->
 <script setup>
-import { ref, reactive, watch, getCurrentInstance } from 'vue'
+import { ref, reactive, watch, getCurrentInstance, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import * as turf from '@turf/turf'
 import { ElMessage, ElNotification } from 'element-plus'
+// 国际化语言插件
+import { useI18n } from 'vue-i18n';
+// 在setup里需要这样拿到 t
+const { t } = useI18n()
+const dd = useI18n()
+// vue-i18n 有一个全局变量 用来修改语言
+const { locale } = useI18n()
 // 菜单折叠
 const isCollapse = ref(false)
 // 刷新
@@ -168,32 +186,34 @@ const isImg = ref(true)
 const logoText = ref('Redundant')
 // 默认路由(menu菜单默认选项)
 const defaultPath = ref('/panel/basedPanel')
+// 语言列表
+let languageList = ref([])
 let breadcrumb = ref([])
 let breadcrumbRouteAll = ref([''])
 let breadcrumbText = ref('')
 // 菜单数据
-const menuList = reactive([
+const menuList = computed(() => [
   {
     // 主菜单
     id: 'f01',
     // title: 'main.panel',
-    title: '看板',
+    title: t('menu.panel'),
     icon: 'Platform',
     // 子菜单
     children: [
-      { router: '/panel/basedPanel', /* title: 'main.basicsPanel' */ title: '基础看板' }
+      { router: '/panel/basedPanel', /* title: 'main.basicsPanel' */ title: t('menu.basicsPanel') }
     ]
   },
   {
     // 主菜单
     id: 'f02',
     // title: 'main.panel',
-    title: '系统管理',
+    title: t('menu.systemMgt'),
     icon: 'ElemeFilled',
     // 子菜单
     children: [
-      { router: '/system/user', /* title: 'main.basicsPanel' */ title: '用户管理' },
-      { router: '/system/role', /* title: 'main.basicsPanel' */ title: '角色管理' }
+      { router: '/system/user', /* title: 'main.basicsPanel' */ title: t('menu.userMgt') },
+      { router: '/system/role', /* title: 'main.basicsPanel' */ title: t('menu.roleMgt') }
     ]
   }
 ])
@@ -235,24 +255,45 @@ watch(
     // 默认选中tabs标签卡
     editableTabsValue.value = router.currentRoute.value.path
     // menuList为所有菜单的集合
-    forMenu(menuList)
+    forMenu(menuList.value)
     getRouteAll(breadcrumbText)
   },
   { immediate: true, deep: true }
 )
-// 监听页面的离开和刷新
-// https://blog.csdn.net/qq_41337100/article/details/106010448
-window.addEventListener('beforeunload', updateHandler)
-// 通知弹窗
-notifyOpen()
-// 本地存储的菜单数据
-addTab(breadcrumbText, router.currentRoute.value.path)
-let tabsBox = JSON.parse(localStorage.getItem('tabsList'))
-// 判断是否为真 赋值
-if (tabsBox) {
-  editableTabs = tabsBox
-}
+createdFun()
 // 方法 **************************************************************
+// 页面加载前需要的操作
+function createdFun() {
+  // 监听页面的离开和刷新
+  // https://blog.csdn.net/qq_41337100/article/details/106010448
+  window.addEventListener('beforeunload', updateHandler)
+  // 通知弹窗
+  notifyOpen()
+  // 本地存储的菜单数据
+  addTab(breadcrumbText, router.currentRoute.value.path)
+  let tabsBox = JSON.parse(localStorage.getItem('tabsList'))
+  // 判断是否为真 赋值
+  if (tabsBox) {
+    editableTabs = tabsBox
+  }
+  // 动态获取支持那些语言
+  // languageList = 
+  let list = []
+  dd.availableLocales.forEach((item) => {
+    if (item === 'cn') {
+      list.push({
+        label: '中文',
+        value: 'cn'
+      })
+    } else if (item === 'en') {
+      list.push({
+        label: 'English',
+        value: 'en'
+      })
+    }
+  })
+  languageList.value = list
+}
 // 获取当前是哪个菜单item
 function forMenu (val) {
   for (let i = 0; i < val.length; i++) {
@@ -296,7 +337,7 @@ function goRoute(path) {
 }
 // 获取当前页面的整个父路由的所有子路由
 function getRouteAll(routeTitle) {
-  menuList.forEach((routeItem, routeIndex) => {
+  menuList.value.forEach((routeItem, routeIndex) => {
     routeItem.children.forEach((routeItemTo, routeIndexTo) => {
       if (routeItemTo.title === routeTitle) {
         // 只拿子节点
@@ -485,6 +526,15 @@ function closeAll() {
     router.push({path: editableTabs[0].name})
   }
   editableTabs.splice(1)
+}
+// 切换语言下拉框
+function languageCommand (val) {
+  changeLang(val)
+}
+// 修改语言
+function changeLang(lang) {
+  locale.value = lang
+  localStorage.setItem('lang', lang)// 重要！下面遇到问题里解释
 }
 // 监听页面的离开和刷新
 // 参考 https://blog.csdn.net/qq_41337100/article/details/106010448

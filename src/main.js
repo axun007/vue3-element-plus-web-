@@ -9,6 +9,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 进度条动画
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import i18n from './i18n/index'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -16,6 +17,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.use(router).mount('#app')
 app.use(ElementPlus)
+app.use(i18n)
 
 NProgress.configure({     
   easing: 'ease',  // 动画方式    

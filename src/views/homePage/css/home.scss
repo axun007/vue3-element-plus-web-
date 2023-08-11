@@ -132,9 +132,24 @@
   display: flex;
   align-content: center;
   justify-content: flex-end;
-  div:nth-child(1){
+  // 语言
+  .language{
+    width: 50px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
+  // 头像
+  .head_portrait {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     span:nth-child(1){
       // padding-left: 10px;
       color: rgb(96 98 102);
@@ -152,11 +167,6 @@
   i{
     font-size: 20px;
     cursor: pointer;
-  }
-  .language{
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
   }
   .message{
     cursor: pointer;
