@@ -305,7 +305,7 @@ onMounted(() => {
     script.type = 'text/javascript'
     script.src = 'https://turing.captcha.qcloud.com/TCaptcha.js'
     document.body.appendChild(script)
-    addMethods()
+    // addMethods()
   } else {
     document.getElementById('CaptchaId').onclick = callback
   }
@@ -439,18 +439,17 @@ function loadErrorCallback() {
 }
 // 给登录button增加一个点击事件
 function addMethods() {
-    try {
-      // 生成一个验证码对象
-      // CaptchaAppId：登录验证码控制台，从【验证管理】页面进行查看。如果未创建过验证，请先新建验证。注意：不可使用客户端类型为小程序的CaptchaAppId，会导致数据统计错误。
-      //callback：定义的回调函数
-      var captcha = new TencentCaptcha('195319963', callback, {});
-      // 调用方法，显示验证码
-      captcha.show()
-    } catch (error) {
-      // 加载异常，调用验证码js加载错误处理函数
-      loadErrorCallback()
-    }
-  
+  try {
+    // 生成一个验证码对象
+    // CaptchaAppId：登录验证码控制台，从【验证管理】页面进行查看。如果未创建过验证，请先新建验证。注意：不可使用客户端类型为小程序的CaptchaAppId，会导致数据统计错误。
+    //callback：定义的回调函数
+    var captcha = new TencentCaptcha('195319963', callback, {});
+    // 调用方法，显示验证码
+    captcha.show()
+  } catch (error) {
+    // 加载异常，调用验证码js加载错误处理函数
+    loadErrorCallback()
+  }
 }
 </script>
 <style scoped lang="scss">
