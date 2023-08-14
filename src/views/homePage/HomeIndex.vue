@@ -21,7 +21,7 @@
             <span class="menu-text-Is" v-show="!isCollapse">{{ $t(menuItem.title) }}</span>
           </template>
           <!-- 子节点 -->
-          <el-menu-item v-for="(childrenItem, childrenIndex) in menuItem.children" :key="childrenIndex + 'child'" :index="childrenItem.router" @click="addTab(childrenItem.title,childrenItem.router,childrenItem)">
+          <el-menu-item v-for="(childrenItem, childrenIndex) in menuItem.children" :key="childrenIndex + 'child'" :index="childrenItem.router" @click="addTab(childrenItem.title,childrenItem.router)">
             <span class="menu-text">{{ $t(childrenItem.title) }}</span>
           </el-menu-item>
         </el-sub-menu>
@@ -78,9 +78,29 @@
             <div class="icon_box">
               <el-icon @click="toggleSearch"><Search /></el-icon>
             </div>
-            <transition name="search-transition">
-              <el-input class="search_box" ref="searchRef" v-if="showSearch" :autofocus="true" @focus="searchFocus" @blur="inputBlur"></el-input>
-            </transition>
+            <div class="select_box" v-if="showSearch">
+              <transition name="search-transition">
+                <el-select
+                  @blur="inputBlur"
+                  @change="selectChange"
+                  v-model="searchMenu"
+                  ref="searchRef"
+                  filterable
+                  remote
+                  :remote-method="remoteMethod"
+                  :loading="selectLoading"
+                  placeholder="Search Menu"
+                  loading-text="加载中..."
+                >
+                  <el-option
+                    v-for="item in menuOptions"
+                    :key="item.data.path"
+                    :label="item.data.group"
+                    :value="item.data.path"
+                  />
+                </el-select>
+              </transition>
+            </div>
           </div>
           <!-- 全屏 -->
           <div class="full_screen pub_rightbox">
@@ -254,6 +274,12 @@ let menuTop = ref(0)
 let searchRef = ref()
 // 搜索框显示隐藏
 let showSearch = ref(null)
+// 搜索菜单变量
+let searchMenu = ref('')
+// 搜索下拉框的加载动画
+let selectLoading = ref(false)
+// 搜索到的数据
+let menuOptions = ref([])
 // 右击菜单项的禁用 启用状态
 // 当前右击tab标签的路径
 let tabPath = ref('')
@@ -588,20 +614,97 @@ function changeLang(lang) {
 // 点击搜索图标 显示隐藏input
 function toggleSearch() {
   showSearch.value = !showSearch.value
+  console.log(showSearch.value)
   // 如果显示状态---获得光标 隐藏状态---失去光标
   if (showSearch.value) {
     nextTick(() => {
       searchRef.value.focus()
     })
-  } else {
-    nextTick(() => {
-      searchRef.value.blur()
-    })
   }
 }
 // input失去焦点
 function inputBlur() {
-  toggleSearch()
+  // toggleSearch()
+  showSearch.value = false
+}
+// 多选框远程搜索方法
+function remoteMethod (query) {
+  if (query) {
+    let arr = []
+    selectLoading.value = true
+    setTimeout(() => {
+      selectLoading.value = false
+      // 循环菜单列表
+      menuList.forEach((item, index) => {
+        // 如果搜索的值 在菜单父级title里面能模糊搜索到 如父级菜单title = 系统管理    query= 管理 使用indexOf查找字符串
+        if (t(item.title).indexOf(query) !== -1) {
+          // 判断当前父级存不存在子级页面
+          if (item.children) {
+            // 循环子级页面
+            item.children.forEach((chItem, chIndex) => {
+              // 往arr添加当前匹配的数据
+              arr.push({
+                data: {
+                  // 例 看板 > 基础看板  --父级子级组合label
+                  group: t(item.title) + ' > ' + t(chItem.title),
+                  // 父级标题 例 看板
+                  parentTitle: item.title,
+                  // 子级标题
+                  childTitle: chItem.title,
+                  // 子级路径
+                  path: chItem.router
+                },
+              })
+            })
+          }
+          return
+        }
+        // 如果query没有在父级的title中匹配 那么判断是否有子级的父级菜单
+        if (item.children) {
+          // 如果存在有子级的父级菜单 则循环所有的子级
+          item.children.forEach((chItem, chIndex) => {
+            // 如果query 能匹配 子级的title 则添加数据
+            if (t(chItem.title).indexOf(query) !== -1) {
+              // 往arr添加当前匹配的数据
+              arr.push({
+                // 同上赋值
+                data: {
+                  group: t(item.title) + ' > ' + t(chItem.title),
+                  parentTitle: item.title,
+                  childTitle: chItem.title,
+                  path: chItem.router
+                },
+              })
+            }
+          })
+        }
+      })
+      // 给select远程搜索列表赋值
+      menuOptions.value = arr
+    }, 200)
+  } else {
+    // 没有匹配的数据 则为空
+    menuOptions.value = []
+  }
+}
+// 多选框远程搜索值改变
+function selectChange(val) {
+  // 循环menuOptions远程搜索的列表 匹配path
+  menuOptions.value.forEach(item => {
+    // 如果列表中的path === val(当前选择的数据的path)
+    if (item.data.path === val) {
+      // 添加tab标签
+      addTab(item.data.childTitle, item.data.path)
+      // 跳转路由
+      router.push({path: val})
+    }
+  })
+  // 清空远程搜索的数据
+  menuOptions.value = []
+  // 清空双向绑定的数据
+  searchMenu.value = {}
+  // 搜索框隐藏
+  showSearch.value = false
 }
 // 切换全屏/还原
 function fullScreen() {
@@ -647,25 +750,6 @@ function updateHandler() {
 </script>
 <style lang="scss">
 @import './css/tabs.scss';
-// .search-transition-leave-active,.search-transition-enter-active {
-//   transition: all .1s;
-// }
-// .search-transition-enter-active  {
-//   transition-delay: .1s;
-// }
-// .search-transition-enter-from,
-// .search-transition-leave-to {
-//   transform: translateX(100%);
-// }
-// .search-transition-leave-active,.search-transition-enter-active {
-//   transition: all .1s;
-// }
-// .search-transition-enter-active {
-//   transition-delay: .1s;
-// }
-// .search-transition-enter-from, .search-transition-leave-to {
-//   transform: translateX(120%);
-// }
 </style>
 <style scoped lang="scss">
   @import './css/home.scss';

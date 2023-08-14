@@ -157,8 +157,19 @@
         font-size: 16px;
       }
     }
+    .select_box{
+      overflow: hidden;
+    }
     ::v-deep(.el-input__wrapper){
       width: 150px;
+      box-shadow: none !important;
+      .el-input__inner{
+        border-bottom: 1px solid red;
+      }
+    }
+    ::v-deep(.is-focus .el-input__wrapper){
+      box-shadow: none !important;
+      border: none !important;
     }
   }
   .enter_e{
