@@ -16,4 +16,3 @@
     background: rgba($color: rgb(108, 210, 109), $alpha: .7);
  }
  </style>
- 
