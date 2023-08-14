@@ -18,11 +18,11 @@
             <el-icon v-if="menuItem.icon">
               <component :is="menuItem.icon" />
             </el-icon>
-            <span class="menu-text-Is" v-show="!isCollapse">{{ menuItem.title }}</span>
+            <span class="menu-text-Is" v-show="!isCollapse">{{ $t(menuItem.title) }}</span>
           </template>
           <!-- 子节点 -->
           <el-menu-item v-for="(childrenItem, childrenIndex) in menuItem.children" :key="childrenIndex + 'child'" :index="childrenItem.router" @click="addTab(childrenItem.title,childrenItem.router,childrenItem)">
-            <span class="menu-text">{{childrenItem.title}}</span>
+            <span class="menu-text">{{ $t(childrenItem.title) }}</span>
           </el-menu-item>
         </el-sub-menu>
       </el-menu>
@@ -53,19 +53,19 @@
                   <template v-if="breadIndex === 0">
                     <el-dropdown placement="top" @command="goRoute">
                       <span class="dropdown-menu">
-                        {{breadItem}}
+                        {{$t(breadItem)}}
                       </span>
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item v-for="(routeAllItem, routeAllIndex) in breadcrumbRouteAll" :key="routeAllIndex + 'ge'" :command="routeAllItem">
-                            {{routeAllItem.title}}
+                            {{ $t(routeAllItem.title) }}
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
                     </el-dropdown>
                   </template>
                   <template v-else>
-                      {{breadItem}}
+                      {{ $t(breadItem) }}
                   </template>
                   </el-breadcrumb-item>
               </el-breadcrumb>
@@ -110,7 +110,7 @@
         <el-tab-pane
             v-for="(item, itemIndex) in editableTabs"
             :key="itemIndex"
-            :label='item.title'
+            :label='$t(item.title)'
             :name="item.name"
             :closable="item.closable"
             >
@@ -161,7 +161,7 @@
 <!-- <script>
   import SaveStatusMixin from '../../mixin/SaveStatusMixin.js'
   export default {
-    mixins: [SaveStatusMixin]
+    mixins: [SaveStatusMixin],
   }
 </script> -->
 <script setup>
@@ -192,28 +192,28 @@ let breadcrumb = ref([])
 let breadcrumbRouteAll = ref([''])
 let breadcrumbText = ref('')
 // 菜单数据
-const menuList = computed(() => [
+const menuList = reactive([
   {
     // 主菜单
     id: 'f01',
     // title: 'main.panel',
-    title: t('menu.panel'),
+    title: 'menu.panel',
     icon: 'Platform',
     // 子菜单
     children: [
-      { router: '/panel/basedPanel', /* title: 'main.basicsPanel' */ title: t('menu.basicsPanel') }
+      { router: '/panel/basedPanel', /* title: 'main.basicsPanel' */ title: 'menu.basicsPanel' }
     ]
   },
   {
     // 主菜单
     id: 'f02',
     // title: 'main.panel',
-    title: t('menu.systemMgt'),
+    title: 'menu.systemMgt',
     icon: 'ElemeFilled',
     // 子菜单
     children: [
-      { router: '/system/user', /* title: 'main.basicsPanel' */ title: t('menu.userMgt') },
-      { router: '/system/role', /* title: 'main.basicsPanel' */ title: t('menu.roleMgt') }
+      { router: '/system/user', /* title: 'main.basicsPanel' */ title: 'menu.userMgt' },
+      { router: '/system/role', /* title: 'main.basicsPanel' */ title: 'menu.roleMgt' }
     ]
   }
 ])
@@ -222,7 +222,7 @@ const menuList = computed(() => [
 let editableTabsValue = ref('')
 let editableTabs = reactive([
   {
-    title: '基础看板',
+    title: 'menu.basicsPanel',
     name: '/panel/basedPanel',
     closable: false 
   }
@@ -255,7 +255,7 @@ watch(
     // 默认选中tabs标签卡
     editableTabsValue.value = router.currentRoute.value.path
     // menuList为所有菜单的集合
-    forMenu(menuList.value)
+    forMenu(menuList)
     getRouteAll(breadcrumbText)
   },
   { immediate: true, deep: true }
@@ -337,7 +337,7 @@ function goRoute(path) {
 }
 // 获取当前页面的整个父路由的所有子路由
 function getRouteAll(routeTitle) {
-  menuList.value.forEach((routeItem, routeIndex) => {
+  menuList.forEach((routeItem, routeIndex) => {
     routeItem.children.forEach((routeItemTo, routeIndexTo) => {
       if (routeItemTo.title === routeTitle) {
         // 只拿子节点
