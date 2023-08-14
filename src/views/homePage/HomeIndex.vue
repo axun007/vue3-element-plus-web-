@@ -350,7 +350,6 @@ function createdFun() {
   languageList.value = list
   // 监听窗口的大小发生改变 全屏逻辑
   window.onresize = function () {
-    console.log(checkFull())
     if (!checkFull()) {
       // 退出全屏后要执行的动作
       fullscreen.value = false
@@ -614,7 +613,8 @@ function changeLang(lang) {
 // 点击搜索图标 显示隐藏input
 function toggleSearch() {
   showSearch.value = !showSearch.value
-  console.log(showSearch.value)
+  // 清空远程搜索的数据
+  menuOptions.value = []
   // 如果显示状态---获得光标 隐藏状态---失去光标
   if (showSearch.value) {
     nextTick(() => {
@@ -635,9 +635,11 @@ function remoteMethod (query) {
     setTimeout(() => {
       selectLoading.value = false
       // 循环菜单列表
+      console.log(query)
       menuList.forEach((item, index) => {
         // 如果搜索的值 在菜单父级title里面能模糊搜索到 如父级菜单title = 系统管理    query= 管理 使用indexOf查找字符串
-        if (t(item.title).indexOf(query) !== -1) {
+        // 全部转换为小写(兼容语言为English)
+        if ((t(item.title).toLowerCase()).indexOf((query.toLowerCase())) !== -1) {
           // 判断当前父级存不存在子级页面
           if (item.children) {
             // 循环子级页面
@@ -664,7 +666,8 @@ function remoteMethod (query) {
           // 如果存在有子级的父级菜单 则循环所有的子级
           item.children.forEach((chItem, chIndex) => {
             // 如果query 能匹配 子级的title 则添加数据
-            if (t(chItem.title).indexOf(query) !== -1) {
+            // 全部转换为小写(兼容语言为English)
+            if ((t(chItem.title).toLowerCase()).indexOf((query.toLowerCase())) !== -1) {
               // 往arr添加当前匹配的数据
               arr.push({
                 // 同上赋值
