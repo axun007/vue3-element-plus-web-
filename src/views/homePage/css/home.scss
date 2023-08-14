@@ -42,22 +42,19 @@
   width: 98.5%;
   // background: red;
 }
-.unfold{
+.menuicon {
   font-size: 20px;
   cursor: pointer;
   transition: .5s ;
   transform-origin: center;
+}
+.unfold_rotate {
   transform: rotateZ(0deg);
-  animation: rotate-360 .5s ease-out 0s;
 }
-.fold{
-  font-size: 20px;
-  cursor: pointer;
-  transition: .5s;
-  transform-origin: center;
-  transform: rotateZ(180deg);
-  animation: rotate360 .5s ease-out 0s;
+.fold_unrotate{
+  transform: rotateZ(540deg);
 }
+
 .margin-30{
   margin-right: 30px;
   display: flex;
@@ -142,6 +139,41 @@
       height: 20px;
       cursor: pointer;
     }
+    i{
+      font-size: 16px;
+    }
+  }
+  .search_box{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icon_box{
+      width: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i{
+        font-size: 16px;
+      }
+    }
+    ::v-deep(.el-input__wrapper){
+      width: 150px;
+    }
+  }
+  .enter_e{
+    animation: enterStyle .5s;
+  }
+  @keyframes enterStyle {
+    0% {width: 50px}
+    100% {width: 222px}
+  }
+  .leave_e{
+    animation: leaveStyle .5s;
+  }
+  @keyframes leaveStyle {
+    0% {width: 222px}
+    100% {width: 50px}
   }
   // 头像
   .head_portrait {

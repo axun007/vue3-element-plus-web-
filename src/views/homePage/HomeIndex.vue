@@ -34,7 +34,7 @@
         <!-- 左侧功能  -->
         <div class="left">
           <!-- 展开折叠菜单icon -->
-          <div :class="[isCollapse ? 'unfold' : 'fold', 'margin-30']">
+          <div :class="isCollapse ? ['menuicon unfold_rotate margin-30'] : ['menuicon fold_unrotate margin-30']">
             <el-icon @click="isMenu">
               <Expand/>
             </el-icon>
@@ -74,6 +74,14 @@
         </div>
         <!-- 右侧功能 -->
         <div class="right">
+          <div :class="showSearch ? ['search_box enter_e'] : ['search_box leave_e']">
+            <div class="icon_box">
+              <el-icon @click="toggleSearch"><Search /></el-icon>
+            </div>
+            <transition name="search-transition">
+              <el-input class="search_box" ref="searchRef" v-if="showSearch" :autofocus="true" @focus="searchFocus" @blur="inputBlur"></el-input>
+            </transition>
+          </div>
           <!-- 全屏 -->
           <div class="full_screen pub_rightbox">
             <el-tooltip class="item" effect="dark" :content='fullscreen ? "还原" : "全屏"'>
@@ -118,20 +126,20 @@
       <!-- 标签页以及路由视图 -->
       <el-tabs v-model="editableTabsValue" type="card" @tab-click="tabClick" @tab-remove="removeTab" @contextmenu.prevent.native="clickRight">
         <el-tab-pane
-            v-for="(item, itemIndex) in editableTabs"
-            :key="itemIndex"
-            :label='$t(item.title)'
-            :name="item.name"
-            :closable="item.closable"
-            >
+          v-for="(item, itemIndex) in editableTabs"
+          :key="itemIndex"
+          :label='$t(item.title)'
+          :name="item.name"
+          :closable="item.closable"
+          >
         </el-tab-pane>
       </el-tabs>
       <!-- 右击菜单 -->
       <div v-show="contextMenuVisible">
         <ul :style="{left:menuLeft +'px',top:menuTop+'px'}" class="contextmenu">
-          <!-- <li>
-            <el-button type="text" size="small"  class="tab-button" :icon="isFullscreen ? 'el-icon-copy-document' : 'el-icon-rank'" >{{isFullscreen ? '退出全屏' : '内容全屏'}}</el-button>
-          </li> -->
+          <li>
+            <el-button @click="isContentFullScreen" size="small"  class="tab-button" :icon="fullscreen ? 'FullScreen' : 'FullScreen'" >{{fullscreen ? '退出全屏' : '内容全屏'}}</el-button>
+          </li>
           <li>
             <el-button @click="isResetRouter" size="small"  :class="isTabRefresh ? 'disabled-btn' : 'tab-button'" :disabled="isTabRefresh" icon="refreshRight" >刷新当前</el-button>
           </li>
@@ -167,17 +175,9 @@
     </el-container>
   </el-container>
 </template>
-
-<!-- <script>
-  import SaveStatusMixin from '../../mixin/SaveStatusMixin.js'
-  export default {
-    mixins: [SaveStatusMixin],
-  }
-</script> -->
 <script setup>
 import screenfull from 'screenfull'
-
-import { ref, reactive, watch, getCurrentInstance, computed, onMounted } from 'vue'
+import { ref, reactive, watch, getCurrentInstance, computed, onMounted, nextTick  } from 'vue'
 import { useRouter } from 'vue-router'
 import * as turf from '@turf/turf'
 import { ElMessage, ElNotification } from 'element-plus'
@@ -250,6 +250,10 @@ let contextMenuVisible = ref(false)
 // 菜单坐标 xy值
 let menuLeft = ref(0)
 let menuTop = ref(0)
+// 搜索菜单的ref
+let searchRef = ref()
+// 搜索框显示隐藏
+let showSearch = ref(null)
 // 右击菜单项的禁用 启用状态
 // 当前右击tab标签的路径
 let tabPath = ref('')
@@ -280,6 +284,10 @@ watch(
 )
 onMounted(() => {
   window.addEventListener("keydown", KeyDown, true)// 监听按键事件
+  // 防止标签初始为退出动画的class类名 解决每次刷新页面 都会执行一次返回动画
+  nextTick(() => {
+    document.getElementsByClassName('search_box')[0].className = 'search_box'
+  })
 })
 createdFun()
 // 方法 **************************************************************
@@ -513,6 +521,18 @@ function isStartedTabs(val) {
 function closeMenu(){
   contextMenuVisible.value = false
 }
+// 内容全屏
+function isContentFullScreen () {
+  const element = document.getElementById('container_max')
+  if (!screenfull.isEnabled) { // 如果不允许进入全屏，发出不允许提示
+    ElMessage({
+      message: '浏览器不支持全屏',
+      type: 'warning',
+    })
+    return false
+  }
+  screenfull.toggle(element)
+}
 // 关闭当前tabs
 function closeCurrent() {
   editableTabs.forEach((item, index)=> {
@@ -565,6 +585,24 @@ function changeLang(lang) {
   locale.value = lang
   localStorage.setItem('lang', lang)// 重要！下面遇到问题里解释
 }
+// 点击搜索图标 显示隐藏input
+function toggleSearch() {
+  showSearch.value = !showSearch.value
+  // 如果显示状态---获得光标 隐藏状态---失去光标
+  if (showSearch.value) {
+    nextTick(() => {
+      searchRef.value.focus()
+    })
+  } else {
+    nextTick(() => {
+      searchRef.value.blur()
+    })
+  }
+}
+// input失去焦点
+function inputBlur() {
+  toggleSearch()
+}
 // 切换全屏/还原
 function fullScreen() {
   fullscreen.value = !fullscreen.value
@@ -609,6 +647,25 @@ function updateHandler() {
 </script>
 <style lang="scss">
 @import './css/tabs.scss';
+// .search-transition-leave-active,.search-transition-enter-active {
+//   transition: all .1s;
+// }
+// .search-transition-enter-active  {
+//   transition-delay: .1s;
+// }
+// .search-transition-enter-from,
+// .search-transition-leave-to {
+//   transform: translateX(100%);
+// }
+// .search-transition-leave-active,.search-transition-enter-active {
+//   transition: all .1s;
+// }
+// .search-transition-enter-active {
+//   transition-delay: .1s;
+// }
+// .search-transition-enter-from, .search-transition-leave-to {
+//   transform: translateX(120%);
+// }
 </style>
 <style scoped lang="scss">
   @import './css/home.scss';
