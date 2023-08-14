@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'  // 引入el 提示框
   axios.defaults.timeout = 60000
   // 请求地址，这里是动态赋值的的环境变量，下一篇会细讲，这里跳过
   // axios.defaults.baseURL = 'http://192.168.50.3:8888/app'
-  axios.defaults.baseURL = 'http://192.168.3.49:8910'
+  axios.defaults.baseURL = '/api'
   //http request 拦截器
   axios.interceptors.request.use(
     config => {

@@ -5,13 +5,15 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [vue()],
     server: {
+      host: "0.0.0.0",
+      cors: true,
+      open: false,
       proxy: {
         '/api': {
           target: 'http://192.168.3.49:8910',
           changeOrigin: true,
-          pathRewrite: {
-            '^/api': ''
-          }
+          ws: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
         }
       }
     },
