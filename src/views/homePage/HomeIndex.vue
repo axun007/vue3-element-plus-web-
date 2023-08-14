@@ -74,23 +74,33 @@
         </div>
         <!-- 右侧功能 -->
         <div class="right">
-          <div class="language">
-            <el-dropdown @command="languageCommand">
-              <span>
-                <img src="../../assets/language.png" >
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item v-for="item in languageList" :command="item.value">
-                    {{ item.label }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+          <!-- 全屏 -->
+          <div class="full_screen pub_rightbox">
+            <el-tooltip class="item" effect="dark" :content='fullscreen ? "还原" : "全屏"'>
+              <img :src="fullscreen ? FullscreemF : FullscreemT" alt="" @click="fullScreen">
+            </el-tooltip>
           </div>
-          <div class="head_portrait">
+          <!-- 语言 -->
+          <div class="language pub_rightbox">
+            <el-tooltip class="item" effect="dark" content='切换语言'>
+              <el-dropdown @command="languageCommand" trigger="click" placement="bottom-end">
+                <span>
+                  <img src="../../assets/language.png" >
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item v-for="item in languageList" :command="item.value">
+                      {{ item.label }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </el-tooltip>
+          </div>
+          <!-- 个人头像 -->
+          <div class="head_portrait pub_rightbox">
             <!-- 头像下拉菜单 -->
-            <el-dropdown>
+            <el-dropdown placement="bottom-end">
               <span>
                 <img src="../../assets/cat01.jpg" >
               </span>
@@ -165,7 +175,9 @@
   }
 </script> -->
 <script setup>
-import { ref, reactive, watch, getCurrentInstance, computed } from 'vue'
+import screenfull from 'screenfull'
+
+import { ref, reactive, watch, getCurrentInstance, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import * as turf from '@turf/turf'
 import { ElMessage, ElNotification } from 'element-plus'
@@ -188,9 +200,15 @@ const logoText = ref('Redundant')
 const defaultPath = ref('/panel/basedPanel')
 // 语言列表
 let languageList = ref([])
+// 面包屑变量
 let breadcrumb = ref([])
 let breadcrumbRouteAll = ref([''])
 let breadcrumbText = ref('')
+// 全屏变量
+let fullscreen = ref(false)
+// 全屏的icon
+const FullscreemT  = new URL('../../assets/fullScreen.png', import.meta.url).href
+const FullscreemF =  new URL('../../assets/fullScreenOff.png', import.meta.url).href
 // 菜单数据
 const menuList = reactive([
   {
@@ -260,6 +278,9 @@ watch(
   },
   { immediate: true, deep: true }
 )
+onMounted(() => {
+  window.addEventListener("keydown", KeyDown, true)// 监听按键事件
+})
 createdFun()
 // 方法 **************************************************************
 // 页面加载前需要的操作
@@ -293,6 +314,14 @@ function createdFun() {
     }
   })
   languageList.value = list
+  // 监听窗口的大小发生改变 全屏逻辑
+  window.onresize = function () {
+    console.log(checkFull())
+    if (!checkFull()) {
+      // 退出全屏后要执行的动作
+      fullscreen.value = false
+    }
+  }
 }
 // 获取当前是哪个菜单item
 function forMenu (val) {
@@ -535,6 +564,38 @@ function languageCommand (val) {
 function changeLang(lang) {
   locale.value = lang
   localStorage.setItem('lang', lang)// 重要！下面遇到问题里解释
+}
+// 切换全屏/还原
+function fullScreen() {
+  fullscreen.value = !fullscreen.value
+  // 调用全屏方法
+  screenfull.toggle()
+}
+// 全屏判断状态 取消
+function checkFull() {
+  //判断浏览器是否处于全屏状态 （需要考虑兼容问题）
+  //火狐浏览器
+  var isFull =
+    document.mozFullScreen ||
+    document.fullScreen ||
+    //谷歌浏览器及Webkit内核浏览器
+    document.webkitIsFullScreen ||
+    document.webkitRequestFullScreen ||
+    document.mozRequestFullScreen ||
+    document.msFullscreenEnabled
+  if (isFull === undefined) {
+    isFull = false
+  }
+  return isFull
+}
+// 监听全屏事件
+function KeyDown(event) {
+  if (event.keyCode === 122) {
+    //禁用f11
+    event.returnValue = false
+    //触发全屏的按钮
+    fullScreen()
+  }
 }
 // 监听页面的离开和刷新
 // 参考 https://blog.csdn.net/qq_41337100/article/details/106010448

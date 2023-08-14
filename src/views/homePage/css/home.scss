@@ -132,8 +132,7 @@
   display: flex;
   align-content: center;
   justify-content: flex-end;
-  // 语言
-  .language{
+  .pub_rightbox{
     width: 50px;
     display: flex;
     align-items: center;
@@ -146,16 +145,8 @@
   }
   // 头像
   .head_portrait {
-    width: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 67px;
     span:nth-child(1){
-      // padding-left: 10px;
-      color: rgb(96 98 102);
-      font-size: 18px;
-      display: flex;
-      align-content: center;
       cursor: pointer;
       img:nth-child(1){
         border-radius: 50%;
