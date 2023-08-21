@@ -154,6 +154,7 @@
           >
         </el-tab-pane>
       </el-tabs>
+      
       <!-- 右击菜单 -->
       <div v-show="contextMenuVisible">
         <ul :style="{left:menuLeft +'px',top:menuTop+'px'}" class="contextmenu">
