@@ -332,33 +332,46 @@ function goRegister() {
 }
 // 登录方法
 function login() {
-  loading.value = true
-  UserService.login({
-    mobile: loginForm.account,
-    password: loginForm.password
-  }).then((res) => {
-    if (res.msg === 'ok' && res.status === 200) {
-      ElMessage({
-        message: '登陆成功，即将进入系统',
-        type: 'success',
-      })
-      setTimeout(() => {
-        router.push({
-          path: '/home'
-        })
-        clearFormValue()
-      }, 1500)
-      return
-    }
-    ElMessage({
-      message: res.msg,
-      type: 'warning',
-    })
-    loading.value = false
-  }).catch((error) => {
-    console.log(error)
-    loading.value = false
+  // 后端服务器关闭 暂停调用登录接口
+  // loading.value = true
+  // UserService.login({
+  //   mobile: loginForm.account,
+  //   password: loginForm.password
+  // }).then((res) => {
+  //   if (res.msg === 'ok' && res.status === 200) {
+      // ElMessage({
+      //   message: '登陆成功，即将进入系统',
+      //   type: 'success',
+      // })
+  //     setTimeout(() => {
+  //       router.push({
+  //         path: '/home'
+  //       })
+  //       clearFormValue()
+  //     }, 1500)
+  //     return
+  //   }
+  //   ElMessage({
+  //     message: res.msg,
+  //     type: 'warning',
+  //   })
+  //   loading.value = false
+  // }).catch((error) => {
+  //   console.log(error)
+  //   loading.value = false
+  // })
+  ElMessage({
+    message: '登陆成功，即将进入系统',
+    type: 'success',
   })
+  loading.value = true
+  setTimeout(() => {
+    router.push({
+      path: '/home'
+    })
+    clearFormValue()
+    loading.value = false
+  }, 1500)
 }
 // 注册方法
 function register() {
