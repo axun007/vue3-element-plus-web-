@@ -28,8 +28,8 @@
   position: relative;
   height: calc(100%);
   overflow-y: auto;
-  // background: rgba(245,247,249,1);
-  background: pink;
+  background: rgba(245,247,249,1);
+  // background: pink;
 }
 .right_header{
   display: flex;
@@ -39,7 +39,7 @@
   position: absolute !important;
   top: 0px;
   left: .75%;
-  width: 98.5%;
+  width: 98.5% !important;
   // background: red;
 }
 .menuicon {
