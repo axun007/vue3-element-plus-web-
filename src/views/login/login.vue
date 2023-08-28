@@ -25,7 +25,7 @@
                   </el-form-item>
                   <!-- 密码 -->
                   <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" type="password" prefix-icon="Unlock" :show-password="true" placeholder="请输入密码" @keyup.enter.native="confirm" clearable>
+                    <el-input v-model="loginForm.password" type="password" prefix-icon="Unlock" :show-password="true" placeholder="请输入密码" @keyup.enter="confirm" clearable>
                     </el-input>
                   </el-form-item>
                   <!-- 自动登录 忘记密码 -->
@@ -81,7 +81,7 @@
                   </el-form-item>
                   <!-- 确认密码 -->
                   <el-form-item prop="confirmPassword">
-                    <el-input v-model="registerForm.confirmPassword" :show-password="true" placeholder="请输入确认密码" clearable prefix-icon="Lock" @keyup.enter.native="goRegister" >
+                    <el-input v-model="registerForm.confirmPassword" :show-password="true" placeholder="请输入确认密码" clearable prefix-icon="Lock" @keyup.enter="goRegister" >
                     </el-input>
                   </el-form-item>
                   <!-- 自动登录 忘记密码 -->

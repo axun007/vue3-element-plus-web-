@@ -144,7 +144,7 @@
         </div>
       </el-header>
       <!-- 标签页以及路由视图 -->
-      <el-tabs v-model="editableTabsValue" type="card" @tab-click="tabClick" @tab-remove="removeTab" @contextmenu.prevent.native="clickRight">
+      <el-tabs v-model="editableTabsValue" type="card" @tab-click="tabClick" @tab-remove="removeTab" @contextmenu.enter.prevent="clickRight">
         <el-tab-pane
           v-for="(item, itemIndex) in editableTabs"
           :key="itemIndex"
