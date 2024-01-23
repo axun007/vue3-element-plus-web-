@@ -69,7 +69,6 @@ nav a.router-link-exact-active {
   background-color: #6e8eba;;
   border-radius: 3px;
 }
-
 /** 修改表格(el-table)的滚动条*/
 .el-table__body-wrapper::-webkit-scrollbar {
   width: 8px;
