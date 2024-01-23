@@ -4,7 +4,7 @@
       <!-- 菜单 -->
       <el-menu class="el-menu-vertical-demo" unique-opened :default-active="defaultPath" router :collapse="isCollapse">
         <div class="logo">
-          <span v-show="isImg">
+          <span v-show="isImg" @click="clickLogoIcon" class="logo_icon">
             <img src="../../assets/cat01.jpg" class="logoImg"/>
           </span>
           <span v-show="!isCollapse" class="logo-title">
@@ -56,7 +56,7 @@
                         {{$t(breadItem)}}
                       </span>
                       <template #dropdown>
-                        <el-dropdown-menu>
+                        <el-dropdown-menu class="bread_select">
                           <el-dropdown-item v-for="(routeAllItem, routeAllIndex) in breadcrumbRouteAll" :key="routeAllIndex + 'ge'" :command="routeAllItem">
                             {{ $t(routeAllItem.title) }}
                           </el-dropdown-item>
@@ -82,8 +82,10 @@
               <transition name="search-transition">
                 <el-select
                   @blur="inputBlur"
+                  class="select_search"
                   @change="selectChange"
                   v-model="searchMenu"
+                  popper-class="search_select"
                   ref="searchRef"
                   filterable
                   remote
@@ -104,13 +106,13 @@
           </div>
           <!-- 全屏 -->
           <div class="full_screen pub_rightbox">
-            <el-tooltip class="item" effect="dark" :content='fullscreen ? "还原" : "全屏"'>
+            <el-tooltip class="item" effect="dark" :content='fullscreen ? "还原" : "全屏"' popper-class="right_menu__tip">
               <img :src="fullscreen ? FullscreemF : FullscreemT" alt="" @click="fullScreen">
             </el-tooltip>
           </div>
           <!-- 语言 -->
           <div class="language pub_rightbox">
-            <el-tooltip class="item" effect="dark" content='切换语言'>
+            <el-tooltip class="item" effect="dark" content='切换语言' popper-class="right_menu__tip">
               <el-dropdown @command="languageCommand" trigger="click" placement="bottom-end">
                 <span>
                   <img src="../../assets/language.png" >
@@ -128,7 +130,7 @@
           <!-- 个人头像 -->
           <div class="head_portrait pub_rightbox">
             <!-- 头像下拉菜单 -->
-            <el-dropdown placement="bottom-end">
+            <el-dropdown placement="bottom-end" popper-class="user_dropdown">
               <span>
                 <img src="../../assets/cat01.jpg" >
               </span>
@@ -742,6 +744,10 @@ function KeyDown(event) {
     fullScreen()
   }
 }
+// 点击Logo图标跳转至首页
+function clickLogoIcon() {
+  router.push({path: '/panel/basedPanel'})
+}
 // 监听页面的离开和刷新
 // 参考 https://blog.csdn.net/qq_41337100/article/details/106010448
 function destroyed() {
@@ -758,21 +764,28 @@ function updateHandler() {
 <style scoped lang="scss">
   @import './css/home.scss';
   .el-main{
-    padding: 6px 0px 0px 8px;
+    padding: 0.375rem 0px 0px 0.5rem;
   }
   .dropdown-menu {
+    font-size: .875rem;
     cursor: pointer;
+  }
+  .el-breadcrumb{
+    font-size: .875rem;
   }
   .logo {
     span{
       display: flex;
       align-items: center;
     }
+    .logo_icon{
+      cursor: pointer;
+    }
     .logo-title{
       overflow: hidden;
       white-space:nowrap;
-      margin-left: 5px;
-      font-size: 14px;
+      margin-left: 0.3125rem;
+      font-size: 0.875rem;
       span{
         display: flex;
         justify-content: center;
@@ -781,50 +794,52 @@ function updateHandler() {
     }
   }
   .contextmenu {
-    width: 95px;
+    width: 5.9375rem;
     margin: 0;
     // border: 1px solid #ccc;
     background: #fff;
     z-index: 3000;
     position: absolute;
     list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
+    padding: 0.3125rem 0;
+    border-radius: .25rem;
     color: #333639;
-    box-shadow: 2px 2px 15px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0.125rem 0.125rem 1rem 0 rgba(0, 0, 0, 0.2);
     .el-button--mini{
-      font-size: 14px;
+      font-size: 0.875rem;
     }
   }
   .contextmenu li {
     margin: 0;
-    padding: 0px 8px;
+    padding: 0px .5rem;
   }
   .contextmenu li .tab-button:hover {
     background: #f2f2f2;
     cursor: pointer;
   }
   .contextmenu li .tab-button{
-    width: 80px;
+    width: 5rem;
     color: #2c3e50;
-    padding: 10px;
+    padding: 0.625rem;
     border: 0;
-    height: 30px;
+    height: 1.875rem;
+    font-size: 0.875rem;
     i{
       transform: rotateZ(90deg);
-      margin-right: 5px;
+      margin-right: 0.3125rem;
     }
   }
   .disabled-btn {
-    width: 80px;
+    width: 5rem;
     color: #f2f2f2;
-    padding: 10px;
+    padding: 0.625rem;
     border: 0;
-    height: 30px;
+    height: 1.875rem;
+    font-size: 0.875rem;
     cursor: not-allowed !important;
     i{
       transform: rotateZ(90deg);
-      margin-right: 5px;
+      margin-right: 0.3125rem;
     }
   }
 </style>

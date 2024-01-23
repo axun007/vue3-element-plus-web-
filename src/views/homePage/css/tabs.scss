@@ -4,22 +4,22 @@ body{
 // 折叠后移入菜单 框背景颜色
 .el-menu--vertical .el-menu.el-menu--popup {
   background-color: rgba(0, 21, 41, 1) !important;
-  border-radius: 5px;
-  min-width: 100px !important;
+  border-radius: 0.3125rem;
+  min-width: 6.25rem !important;
   .el-menu-item{
-    width: 100px !important;
-    height: 30px;
+    width: 6.25rem !important;
+    height: 1.875rem;
     padding-left: 0px !important;
-    padding: 0px 7px !important;
+    padding: 0px .4375rem !important;
   }
   .el-menu-item.is-active{
-    height: 30px;
+    height: 1.875rem;
   }
   .menu-text{
-    height: 30px !important;
-    line-height: 30px;
+    height: 1.875rem !important;
+    line-height: 1.875rem;
     overflow: hidden;
-    padding: 0px 15px !important;
+    padding: 0px 0.9375rem !important;
   }
 }
 .el-sub-menu.is-active,.el-sub-menu{
@@ -54,22 +54,55 @@ body{
     color: white;
   }
 }
+
+.bread_select{
+  padding: 0.3125rem 0 !important;
+  .el-dropdown-menu__item{
+    line-height: 1.375rem;
+    padding: 0.3125rem 1rem;
+    font-size: 0.875rem;
+    
+  }
+  .el-breadcrumb__separator{
+    margin: 0 0.5625rem;
+  }
+}
+.el-breadcrumb{
+  .el-breadcrumb__separator{
+    margin: 0 0.5625rem;
+  }
+}
 .right_content{
+  .el-header{
+    padding: 0 1.25rem;
+  }
     // tab标签页样式
   .el-tabs__item{
     padding: 0;
     margin: 0;
     border: 0;
-    padding:0px 10px 2px !important;
-    height: 25px !important;
-    margin-right: 6px;
-    font-size: 12px !important;
-  } 
+    padding:0px 0.625rem .125rem !important;
+    height: 1.5625rem !important;
+    margin-right: .375rem;
+    font-size: .75rem !important;
+  }
+  .el-tabs--card>.el-tabs__header .el-tabs__item .is-icon-close {
+    font-size: 0.75rem;
+    max-width: 0.875rem !important;
+    height: 0.875rem;
+  }
+  .el-tabs--card>.el-tabs__header .el-tabs__item.is-active.is-closable .is-icon-close{
+    width: 0.875rem;
+  }
+  .el-tabs--card>.el-tabs__header .el-tabs__item .is-icon-close:hover {
+    font-size: 0.75rem;
+    height: 0.875rem;
+  }
   //整个scrool滚动条样式
   .el-tabs--card>.el-tabs__header {
     border-bottom: 0 !important;
     background: rgba(245,247,249,1);
-    // height: 32;
+    height: 2.5rem;
   }
   .el-tabs__header{
     display: flex;
@@ -78,24 +111,27 @@ body{
   .el-tabs--card>.el-tabs__header .el-tabs__nav{
     // margin-top: 10px;
     border: 0 !important;
-    border-radius: 3px !important;
-    height: 25px;
-    padding-left: 13px;
+    border-radius: 0.1875rem !important;
+    height: 1.5625rem;
+    padding-left: 0.8125rem;
   }
   // 每个循环出来的tab标签右边框
   .el-tabs--card>.el-tabs__header .el-tabs__item{
     border: 0 !important;
     background: white ;
-    border-radius: 3px;
+    border-radius: 0.1875rem;
+    // i{
+    //   width: 0.875rem;
+    // }
   }
   // 最外层tab
   .el-tabs.el-tabs--card.el-tabs--top{
-    height: 40px !important;
+    height: 2.5rem !important;
     padding: 0 0 0px 0px;
     transition: all .5s;
   }
   .el-tabs__nav-prev,.el-tabs__nav-next{
-    line-height: 32px !important;
+    line-height: 2rem !important;
   }
   //鼠标悬浮字体变色
   .el-tabs__item:hover{
@@ -103,5 +139,34 @@ body{
   }
   .el-tabs__item.is-active:hover{
     color: rgb(64 158 255) !important;
+  }
+}
+.user_dropdown{
+  display: block;
+  .el-dropdown-menu{
+    padding: 0.3125rem 0;
+    border-radius: 0.25rem;
+    .el-dropdown-menu__item{
+      line-height: 1.375rem;
+      padding: 0.3125rem 1rem;
+      font-size: 0.875rem;
+    }
+  }
+}
+.right_menu__tip{
+  display: block;
+  font-size: 0.75rem !important;
+  min-width: 0.625rem !important;
+  line-height: 1.25rem !important;
+  padding: 0.3125rem 0.6875rem !important;
+  border-radius: 0.25rem;
+  .el-popper__arrow{
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+  .el-popper__arrow::before{
+    width: 0.625rem;
+    height: 0.625rem;
+    border-top-left-radius: 0.125rem !important;
   }
 }

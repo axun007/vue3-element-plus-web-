@@ -92,7 +92,7 @@
                           <el-checkbox v-model="registerForm.consent"></el-checkbox>
                         </div>
                         <div>
-                          <span> 我同意隐私协议</span>
+                          <span class="zc_text"> 我同意隐私协议</span>
                         </div>
                       </div>
                     </div>
@@ -472,8 +472,45 @@ function addMethods() {
 .home{
     width: 100%;
     height: 100vh;
+    // position: absolute;
+    // left: 0;
+    // right: 0;
+    // top: 0;
+    // bottom: 0;
     background: rgba(45, 140, 240, 1);
     display: flex;
+    ::v-deep(.el-input__wrapper){
+      padding: 1px 0.6875rem;
+      .el-input__inner{
+        height: 100%;
+        font-size: .85rem;
+      }
+    }
+    ::v-deep(.el-form-item__error){
+      font-size: .85rem;
+    }
+    ::v-deep(.el-button){
+      font-size: 1rem;
+    }
+    ::v-deep(.el-link__inner){
+      font-size: 0.875rem;
+    }
+    ::v-deep(.el-tabs){
+      --el-tabs-header-height: 2.5rem
+    }
+    ::v-deep(.el-form-item){
+      margin-bottom: 1.125rem;
+    }
+    ::v-deep(.el-checkbox){
+      height: 100%;
+      .el-checkbox__inner{
+        width: 0.875rem;
+        height: 0.975rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
     .left-box{
       width: 50%;
       min-height: 100%;
@@ -481,7 +518,8 @@ function addMethods() {
       justify-content: center;
       align-items: center;
       img{      
-        width: 80%;
+        width: 40.599375rem;
+        height: 36.34875rem;
         margin: 0 auto;
         display: flex;
       }
@@ -500,11 +538,11 @@ function addMethods() {
         .form{
           width: 100%;
           .title{
-            margin-bottom: 25px;
+            margin-bottom: 1.5625rem;
             .logo{
               width: 100%;
               background: pink;
-              height: 80px;
+              height: 5rem;
             }
             .logo {
               z-index: 1;
@@ -512,7 +550,8 @@ function addMethods() {
               font-size: inherit;
               font-family: inherit;
               color: white;
-              padding: 0.5em 1em;
+              // padding: 0.5em 1em;
+              // box-sizing: border-box;
               outline: none;
               border: none;
               overflow: hidden;
@@ -543,28 +582,35 @@ function addMethods() {
             }
             .text{
               color: #808695;
-              margin-top: 7px;
+              margin-top: 0.4375rem;
               text-align: center;
-              font-size: 14px;
+              font-size: 0.875rem;
             }
           }
           .content{
             .login-service{
               width: 100%;
-              height: 25px;
+              height: 1.5625rem;
               display: flex;
               justify-content: space-between;
               align-items: center;
               .select-box{
                 display: flex;
                 div:nth-child(2){
-                  margin-left: 5px;
+                  margin-left: 0.3125rem;
+                  display: flex;
+                  align-items: center;
                 }
               }
               .second-box{
                 display: flex;
                 div:nth-child(2){
-                  margin-left:5px;
+                  margin-left: 0.3125rem;
+                  display: flex;
+                  align-items: center;
+                }
+                span{
+                  font-size: 1rem;
                 }
               }
             }
@@ -575,23 +621,29 @@ function addMethods() {
   }
   ::v-deep(.code){
     display: flex;
+    width: 100%;
+    height: 100%;
     .el-input{
-      margin-right: 10px;
-      width: 190px;
+      margin-right: 0.625rem;
     }
     .el-button{
-      height: 37px;
+      height: 100%;
+      font-size: 1rem;
     }
   }
   span{
-    font-size: 14px;
+    font-size: 0.875rem;
+  }
+  .zc_text{
+    font-size: 0.875rem !important;
   }
   ::v-deep(.service  .el-form-item__content){
-    height: 20px;
+    height: 1.25rem;
+    line-height: 0;
   }
   ::v-deep(.submit){
     width: 100%;
-    height: 37px;
+    height: 2.3125rem;
   }
   ::v-deep(.el-tabs__nav-wrap::after){
     background-color: white
@@ -599,13 +651,13 @@ function addMethods() {
   ::v-deep(.el-tabs__item){
     margin: 0;
     border: 0;
-    padding-right: 100px !important;
-    font-size: 16px;
+    padding-right: 6.25rem !important;
+    font-size: 1rem;
   }
   ::v-deep(.el-tabs__nav-scroll){
     display: flex;
     justify-content: center;
-    padding-left: 80px;
+    padding-left: 5rem;
   }
   ::v-deep(.el-link.el-link--default){
     color: #2d8cf0;
@@ -614,7 +666,21 @@ function addMethods() {
 <style lang="scss">
 .content{
   .el-input__wrapper{
-    height: 35px
+    height: 2.1875rem;
+    i{
+      font-size: 1rem !important;
+    }
+    .el-input__prefix-inner>:last-child {
+      margin-right: .5rem;
+    }
+  }
+  .el-checkbox__input.is-checked .el-checkbox__inner::after{
+    width: 0.1875rem;
+    height: 0.4375rem;
+    left: .25rem;
+    top: 0.0625rem;
+    // transform: rotate(45deg) scaleY(1);
+    // font-size: 2rem !important;
   }
 }
 </style>
