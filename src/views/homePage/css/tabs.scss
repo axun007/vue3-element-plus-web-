@@ -1,6 +1,18 @@
 body{
   background-color: rgba(245,247,249,1);
 }
+.el-aside{
+  min-height: 100vh;
+  transition: width .1s;
+  -webkit-transition: width .1s;
+  -moz-transition: width .1s;
+  -webkit-transition: width .1s;
+  -o-transition: width .1s;
+  
+}
+.el-menu--popup{
+  padding: 0.3125rem 0 !important;
+}
 // 折叠后移入菜单 框背景颜色
 .el-menu--vertical .el-menu.el-menu--popup {
   background-color: rgba(0, 21, 41, 1) !important;

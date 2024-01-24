@@ -1,8 +1,8 @@
 <template>
   <el-container ref="bodyHeight">
-    <div class="menu-box">
+    <el-aside class="menu-box" :style="{width: asideWidth}">
       <!-- 菜单 -->
-      <el-menu class="el-menu-vertical-demo" unique-opened :default-active="defaultPath" router :collapse="isCollapse">
+      <el-menu class="el-menu-vertical-demo" unique-opened :default-active="defaultPath" router :collapse="isCollapse" ref="menuRef" :collapse-transition="false">
         <div class="logo">
           <span v-show="isImg" @click="clickLogoIcon" class="logo_icon">
             <img src="../../assets/cat01.jpg" class="logoImg"/>
@@ -26,7 +26,7 @@
           </el-menu-item>
         </el-sub-menu>
       </el-menu>
-    </div>
+    </el-aside>
     <!-- 右侧主题 -->
     <el-container class="right_content">
       <!-- 头部功能 -->
@@ -229,6 +229,7 @@ let breadcrumbRouteAll = ref([''])
 let breadcrumbText = ref('')
 // 全屏变量
 let fullscreen = ref(false)
+let asideWidth = ref('160px')
 // 全屏的icon
 const FullscreemT  = new URL('../../assets/fullScreen.png', import.meta.url).href
 const FullscreemF =  new URL('../../assets/fullScreenOff.png', import.meta.url).href
@@ -294,6 +295,8 @@ let isTabCloseLeft = ref(false)
 let isTabCloseRight = ref(false)
 let isTabCloseElse = ref(false)
 let isTabCloseAll = ref(false)
+// 菜单的refs
+const menuRef = ref(null)
 // const { proxy } = getCurrentInstance()
 // console.log(proxy.statusFields = ['editableTabs'])
 // 监听当前路由变化
@@ -311,12 +314,19 @@ watch(
   },
   { immediate: true, deep: true }
 )
+// 监听菜单的折叠或展开 动态修改aside的宽度(菜单的box，优化菜单折叠动画)
+watch(isCollapse, (nVal, oVal) => {
+  initAsideWidth()
+})
 onMounted(() => {
   window.addEventListener("keydown", KeyDown, true)// 监听按键事件
+  window.addEventListener('resize', onResize)
   // 防止标签初始为退出动画的class类名 解决每次刷新页面 都会执行一次返回动画
   nextTick(() => {
     document.getElementsByClassName('search_box')[0].className = 'search_box'
   })
+  // 初始化aside的宽度
+  initAsideWidth()
 })
 createdFun()
 // 方法 **************************************************************
@@ -358,6 +368,17 @@ function createdFun() {
       fullscreen.value = false
     }
   }
+}
+// 菜单动画优化 动态赋值aside的宽度
+function initAsideWidth () {
+  nextTick(() => {
+    let width = menuRef.value.$el.scrollWidth
+    asideWidth.value = width + 'px'
+  })
+}
+// 窗口发生变化
+function onResize () {
+  initAsideWidth()
 }
 // 获取当前是哪个菜单item
 function forMenu (val) {

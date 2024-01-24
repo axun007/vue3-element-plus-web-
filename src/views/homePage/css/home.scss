@@ -28,7 +28,7 @@
   position: relative;
   height: calc(100%);
   overflow-y: auto;
-  background: rgba(245,247,249,1);
+  background: white;
   // background: pink;
 }
 .right_header{
@@ -38,8 +38,10 @@
 .router-view{
   position: absolute !important;
   top: 0px;
-  left: .75%;
-  width: 98.5% !important;
+  padding: 1rem;
+  box-sizing: border-box;
+  // left: .75%;
+  width: 100% !important;
   // background: red;
 }
 .menuicon {
@@ -268,9 +270,6 @@
     font-size: 0.75rem;
   }
 }
-::v-deep(.el-menu--popup){
-  background-color: rgba(0, 21, 41, 1) !important;
-}
 .logo{
   height: 3.75rem;
   display: flex;
@@ -297,9 +296,6 @@
 .menu-text:hover{
   transition: all .3s ease-in-out;
   color: white;
-}
-::v-deep(.el-menu--popup){
-  background-color: red !important;
 }
 //子菜单的文字间距
 .menu-text{
