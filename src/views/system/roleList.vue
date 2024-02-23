@@ -65,7 +65,6 @@ let roleList = reactive([
 function handleSizeChange () {}
 function handleCurrentChange () {}
 </script>
- 
 <style lang="scss">
 .role_box{
    width: 100%;
